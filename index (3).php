@@ -11,8 +11,8 @@ $mail->IsSMTP();
 $mail->Host = 'smtp.gmail.com';
 $mail->SMTPAuth = true;
 $mail->Username = 'chethanabishek@gmail.com'; //myemail
-$mail->Password = 'che123//';
-$mail->SMTPSecure = 'ssl';
+$mail->Password = 'chethio123//';
+// $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
 $mail->setFrom('chethanabishek6@gmail.com', 'eshop');  //seccondary my email
 $mail->addReplyTo('chethanabishek@gmail.com', 'eshop'); //to which email the reply should be recieved

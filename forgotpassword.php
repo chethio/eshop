@@ -25,7 +25,7 @@ if (isset($_GET["e"])) {
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'chethanabishek@gmail.com'; //myemail
-            $mail->Password = 'che123//';
+            $mail->Password = 'suck my ass';
             $mail->SMTPSecure = 'ssl';
             $mail->Port = 465;
             $mail->setFrom('chethanabishek6@gmail.com', 'eshop');  //seccondary my email

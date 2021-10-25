@@ -19,6 +19,7 @@ if (isset($_SESSION["u"])) {
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="bootstrap.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="jquery.min.js"></script>
 </head>
 
 <body style="background-color: #E9EBEE;">
@@ -180,7 +181,7 @@ if (isset($_SESSION["u"])) {
 
                     <!-- product -->
 
-                    <div class="col-12 col-lg-10 mt-3 mb-3 bg-light border border-primary">
+                    <div class="col-12 col-lg-10 mt-3 mb-3 bg-light border border-primary" id="products">
                         <div class="row" id="div1">
 
 

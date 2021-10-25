@@ -23,6 +23,7 @@ if (isset($_SESSION["u"])) {
     <link rel="stylesheet" href="bootstrap.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -167,8 +168,11 @@ if (isset($_SESSION["u"])) {
 
 
                                                     ?>
-                                        <img onmouseover="detailsmodal(<?php echo $cr['id'] ?>);" style="height: 150px;"
-                                            src="<?php echo $arr[0]; ?>" class="img-fluid rounded-start">
+
+                                        <img data-bs-toggle="popover" data-bs-trigger="hover focus"
+                                            data-bs-content="<?php echo $pr['description']; ?>"
+                                            title="<?php echo $pr['title']; ?>" style="height: 150px;"
+                                            src="<?php echo $arr[0]; ?>" class="img-fluid rounded-start d-inline-block">
                                     </div>
                                     <div class="col-md-5">
                                         <div class="card-body">
@@ -302,8 +306,16 @@ if (isset($_SESSION["u"])) {
             require "footer.php";
             ?>
     </div>
-
+    <script src="jquery.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="script.js"></script>
+    <script src="bootstrap.js"></script>
+    <script type="text/javascript">
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+    </script>
 </body>
 
 </html>

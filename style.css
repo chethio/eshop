@@ -326,3 +326,20 @@
   height: 510px;
   overflow-y: scroll;
 }
+
+.firstplace {
+  height: 90px;
+  background-image: url("resources/firstplace.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.addnewimg {
+  height: 50px;
+
+  background-image: url("resources/add.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 50%;
+}

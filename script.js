@@ -377,8 +377,12 @@ function deletemodal(id) {
 
 function deleteproduct(id) {
   var productid = id;
-  var r = new XMLHttpRequest();
+  var modal = document.getElementById("deletemodal" + id);
 
+  k = new bootstrap.Modal(modal);
+  k.show();
+
+  var r = new XMLHttpRequest();
   r.onreadystatechange = function () {
     if (r.readyState == 4) {
       var t = r.responseText;
@@ -392,6 +396,81 @@ function deleteproduct(id) {
   r.open("GET", "deleteproduct.php?id=" + productid, true);
   r.send();
 }
+
+//Search filters part
+
+function load_data(page, query = "") {
+  var age;
+  if (document.getElementById("n").checked) age = 1;
+  else if (document.getElementById("o").checked) age = 2;
+  else age = 0;
+
+  var qty;
+  if (document.getElementById("l").checked) qty = 1;
+  else if (document.getElementById("h").checked) qty = 2;
+  else qty = 0;
+
+  var condition;
+  if (document.getElementById("b").checked) condition = 1;
+  else if (document.getElementById("u").checked) condition = 2;
+  else condition = 0;
+
+  $.ajax({
+    url: "search.php",
+    method: "POST",
+    data: {
+      page: page,
+      query: query,
+      age: age,
+      qty: qty,
+      condition: condition,
+    },
+    success: function (data) {
+      $("#products").html(data);
+    },
+  });
+}
+$(document).ready(function () {
+  load_data(1);
+
+  $(document).on("click", ".page-link", function () {
+    var page = $(this).data("page_number");
+    var query = $("#s").val();
+    load_data(page, query);
+  });
+
+  $("#s").keyup(function () {
+    var query = $("#s").val();
+    load_data(1, query);
+  });
+});
+
+function load_user_data(page, query = "") {
+  $.ajax({
+    url: "searchuser.php",
+    method: "POST",
+    data: {
+      page: page,
+      query: query,
+    },
+    success: function (data) {
+      $("#user_data").html(data);
+    },
+  });
+}
+$(document).ready(function () {
+  load_user_data(1);
+  $(document).on("click", ".page-link", function () {
+    var page = $(this).data("page_number");
+
+    var query = $("#searchtext").val();
+    load_user_data(page, query);
+  });
+  $("#searchbutton").click(function () {
+    var query = $("#searchtext").val();
+    load_user_data(1, query);
+  });
+});
 
 // filters part
 
@@ -903,3 +982,421 @@ function printDiv() {
   window.print();
   document.body.innerHTML = restorepage;
 }
+
+// feedback modal
+
+function addfeedback(id) {
+  var feedbackmodal = document.getElementById("feedbackmodal" + id);
+  f = new bootstrap.Modal(feedbackmodal);
+  f.show();
+}
+
+// save feedback
+var f;
+function savefeedback(id) {
+  var pid = id;
+  var feedtext = document.getElementById("feedtext" + id).value;
+
+  var form = new FormData();
+  form.append("i", pid);
+  form.append("t", feedtext);
+
+  var r = new XMLHttpRequest();
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+      if (t == "1") {
+        f.hide();
+      } else {
+        alert("Please enter some feedback");
+      }
+    }
+  };
+  r.open("POST", "savefeedback.php", true);
+  r.send(form);
+}
+
+// admin verifivation
+function adminVerification() {
+  var e = document.getElementById("e").value;
+
+  var form = new FormData();
+  form.append("e", e);
+
+  var r = new XMLHttpRequest();
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var text = r.responseText;
+
+      if (text == "Success") {
+        var verificationModal = document.getElementById("verificationModal");
+        k = new bootstrap.Modal(verificationModal);
+
+        k.show();
+      } else {
+        alert(text);
+      }
+    }
+  };
+  r.open("POST", "adminVerificationProcess.php", true);
+  r.send(form);
+}
+
+// very with email
+function verify() {
+  var v = document.getElementById("vc").value;
+  var r = new XMLHttpRequest();
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var text = r.responseText;
+
+      if (text == "success") {
+        k.hide();
+        window.location = "adminPanel.php";
+      } else {
+        alert(text);
+      }
+    }
+  };
+  r.open("GET", "verifyProcess.php?v=" + v, true);
+  r.send();
+}
+
+// block user
+
+function blockuser(email) {
+  var mail = email;
+
+  var blockbtn = document.getElementById("blb" + mail);
+
+  var f = new FormData();
+  f.append("e", mail);
+
+  var r = new XMLHttpRequest();
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+
+      if (t == "2") {
+        blockbtn.className = "btn btn-danger";
+        blockbtn.innerHTML = "Block";
+      } else {
+        blockbtn.className = "btn btn-success";
+        blockbtn.innerHTML = "Unblock";
+      }
+    }
+  };
+  r.open("POST", "userblockprocess.php", true);
+  r.send(f);
+}
+
+// block product
+
+function blockproduct(id) {
+  var id = id;
+
+  var blockbtn = document.getElementById("blb" + id);
+
+  var f = new FormData();
+  f.append("id", id);
+
+  var r = new XMLHttpRequest();
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+
+      if (t == "2") {
+        blockbtn.className = "btn btn-danger";
+        blockbtn.innerHTML = "Block";
+      } else {
+        blockbtn.className = "btn btn-success";
+        blockbtn.innerHTML = "Unblock";
+      }
+    }
+  };
+  r.open("POST", "productblockprocess.php", true);
+  r.send(f);
+}
+
+// search user in manage users
+
+function searchuser() {
+  var text = document.getElementById("searchtext").value;
+
+  var r = new XMLHttpRequest();
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+      if (t == "success") {
+        window.location = "manageusers.php";
+      } else {
+        alert(t);
+      }
+    }
+  };
+  r.open("GET", "searchuser.php?s=" + text, true);
+  r.send();
+}
+
+// advanced search
+
+function advancedsearch() {
+  var keyword = document.getElementById("k").value;
+  var category = document.getElementById("c").value;
+  var brand = document.getElementById("b").value;
+  var model = document.getElementById("m").value;
+  var condition = document.getElementById("con").value;
+  var color = document.getElementById("clr").value;
+  var pricefrom = document.getElementById("pf").value;
+  var priceto = document.getElementById("pt").value;
+
+  var result = document.getElementById("result");
+
+  var f = new FormData();
+  f.append("k", keyword);
+  f.append("c", category);
+  f.append("b", brand);
+  f.append("m", model);
+  f.append("con", condition);
+  f.append("clr", color);
+  f.append("pf", pricefrom);
+  f.append("pt", priceto);
+
+  var r = new XMLHttpRequest();
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+      result.innerHTML = t;
+    }
+  };
+  r.open("POST", "advancedsearchprocess.php", true);
+  r.send(f);
+}
+
+// daily sellings
+
+function dailysellings() {
+  var from = document.getElementById("sf").value;
+  var to = document.getElementById("st").value;
+  var link = document.getElementById("historylink");
+
+  link.href = "sellinghistory.php?f=" + from + "&t=" + to;
+}
+
+// advanced jquey search
+function advanced_jsearch(page, query = "") {
+  category = $("#c").val();
+  brand = $("#b").val();
+  model = $("#m").val();
+  condition = $("#con").val();
+  color = $("#clr").val();
+  pfrom = $("#pf").val();
+  pto = $("#pt").val();
+
+  $.ajax({
+    url: "advancedsearchjq.php",
+    method: "POST",
+    data: {
+      page: page,
+      query: query,
+      category: category,
+      brand: brand,
+      condition: condition,
+      color: color,
+      pfrom: pfrom,
+      pto: pto,
+      model: model,
+    },
+    success: function (data) {
+      $("#result").html(data);
+    },
+  });
+}
+
+$(document).on("click", ".page-link", function () {
+  var page = $(this).data("page_number");
+  var query = $("#k").val();
+  advanced_jsearch(page, query);
+});
+
+$("#advancedsearchbutton").click(function () {
+  var query = $("#k").val();
+  advanced_jsearch(1, query);
+});
+
+// send messages
+
+function sendmessage(mail, msgid) {
+  var email = mail;
+  var msgtxt = document.getElementById(msgid).value;
+
+  var f = new FormData();
+  f.append("e", email);
+  f.append("t", msgtxt);
+
+  var r = new XMLHttpRequest();
+
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+      document.getElementById(msgid).value = "";
+    }
+  };
+
+  r.open("POST", "sendmessageprocess.php", true);
+  r.send(f);
+}
+
+// refres msg view area
+
+function refreshmsgare(mail, msgdiv) {
+  var chatrow = document.getElementById(msgdiv);
+
+  var f = new FormData();
+  f.append("e", mail);
+
+  var r = new XMLHttpRequest();
+
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+      chatrow.innerHTML = t;
+    }
+  };
+
+  r.open("POST", "refreshmsgareaprocess.php", true);
+  r.send(f);
+}
+// refresher
+function refresher(email, msgdiv) {
+  setInterval(function () {
+    refreshmsgare(email, msgdiv);
+  }, 1000);
+  setInterval(refreshrecentarea, 1000);
+}
+// refreshrecentarea
+function loadmessages(email, msgdiv) {
+  setInterval(function () {
+    refreshmsgare(email, msgdiv);
+  }, 1000);
+}
+function refreshrecentarea() {
+  var rcv = document.getElementById("rcv");
+
+  var r = new XMLHttpRequest();
+
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+      rcv.innerHTML = t;
+    }
+  };
+
+  r.open("POST", "refreshrecentareaprocess.php", true);
+  r.send();
+}
+
+// view mesaage modal in manage users
+
+function viewmsgmodal(email) {
+  var pop = document.getElementById("msgmodal" + email);
+  k = new bootstrap.Modal(pop);
+  k.show();
+}
+
+// goo too messages.php
+
+function gotomessages(email) {
+  alert(email);
+}
+
+// add new category modal
+
+function addnewmodal() {
+  var catmodal = document.getElementById("catmodal");
+  k = new bootstrap.Modal(catmodal);
+  k.show();
+}
+
+// save category
+
+function savecategory() {
+  var category = document.getElementById("categorytext").value;
+
+  var r = new XMLHttpRequest();
+
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
+      if (t == "success") {
+        k.hide();
+        alert("Category added successfully");
+        window.location = "manageProduct.php";
+      } else {
+        alert(t);
+      }
+    }
+  };
+
+  r.open("GET", "addnewcategory.php?t=" + category, true);
+  r.send();
+}
+
+// single view modal in manage product php
+
+function singleviewmodal(id) {
+  var modal = document.getElementById("singleproductview" + id);
+
+  k = new bootstrap.Modal(modal);
+  k.show();
+}
+
+//basic search
+function basicsearch(page) {
+  category = $("#basiccategory").val();
+  query = $("#basicsearch").val();
+
+  $.ajax({
+    url: "basicsearchjquery.php",
+    method: "POST",
+    data: {
+      page: page,
+      query: query,
+      category: category,
+    },
+    success: function (data) {
+      $("#carouselmain").hide();
+      $("#load").html(data);
+    },
+  });
+}
+
+$(document).on("click", ".page-link", function () {
+  var page = $(this).data("page_number");
+  basicsearch(page);
+});
+
+$("#searchbutton").click(function () {
+  basicsearch(1);
+});
+
+//manage products
+function manage_products(page) {
+  $.ajax({
+    url: "searchproductj.php",
+    method: "POST",
+    data: {
+      page: page,
+    },
+    success: function (data) {
+      $("#manageproductload").html(data);
+    },
+  });
+}
+
+$(document).on("click", ".page-link", function () {
+  var page = $(this).data("page_number");
+  manage_products(page);
+});
+
+manage_products(1);

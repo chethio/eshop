@@ -87,7 +87,7 @@
 
                                     ?>
 
-                                        <option value="<?php echo $d["id"]; ?>"><?php echo $d["name"]; ?></option>
+                                    <option value="<?php echo $d["id"]; ?>"><?php echo $d["name"]; ?></option>
 
                                     <?php
                                     }
@@ -195,7 +195,8 @@
                                 <label>New Password</label>
                                 <div class="input-group">
                                     <input type="password" class="form-control" id="np">
-                                    <button id="npb" onclick="showpass1();" class="btn btn-outline-primary" type="button">Show</button>
+                                    <button id="npb" onclick="showpass1();" class="btn btn-outline-primary"
+                                        type="button">Show</button>
                                 </div>
                             </div>
 
@@ -204,7 +205,8 @@
                                 <label>Retype New Password</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="rnp">
-                                    <button id="npb2" onclick="showpass2();" class="btn btn-outline-primary" type="button">Show</button>
+                                    <button id="npb2" onclick="showpass2();" class="btn btn-outline-primary"
+                                        type="button">Show</button>
                                 </div>
                             </div>
 

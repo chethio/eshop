@@ -305,7 +305,7 @@ if (!empty($search) && $age != 0) {
     // search and condition
 } else if (!empty($search) && $condition != 0) {
     if ($condition == 1) {
-        $prs = database::search("SELECT * FROM product WHERE `user_email`='" . $u["email"] . "'  AND  `title` LIKE '%" . $search . "%' ORDER BY `condition_id` ASC;");
+        $prs = database::search("SELECT * FROM product WHERE `user_email`='" . $u["email"] . "'  AND  `title` LIKE '%" . $search . "%' AND `condition_id`='1';");
         $saq = $prs->num_rows;
 
         for ($i = 0; $i < $saq; $i++) {
@@ -377,7 +377,7 @@ if (!empty($search) && $age != 0) {
         }
     } else if ($condition == 2) {
 
-        $prs = database::search("SELECT * FROM product WHERE `user_email`='" . $u["email"] . "'  AND  `title` LIKE '%" . $search . "%' ORDER BY `condition_id` DESC;");
+        $prs = database::search("SELECT * FROM product WHERE `user_email`='" . $u["email"] . "'  AND  `title` LIKE '%" . $search . "%' AND `condition_id`='2';");
         $saq = $prs->num_rows;
 
         for ($i = 0; $i < $saq; $i++) {
@@ -395,7 +395,7 @@ if (!empty($search) && $age != 0) {
                             $pimgs = database::search("SELECT * FROM image WHERE `product_id`='" . $page["id"] . "'");
                             $pir = $pimgs->fetch_assoc();
                             ?>
-                <img src="<?php echo $pir["code"]; ?>" class="img-fluid rounded-start" alt="...">
+                <img height="200px" src="<?php echo $pir["code"]; ?>" class="img-fluid rounded-start" alt="...">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
@@ -883,7 +883,7 @@ if (!empty($search) && $age != 0) {
     }
 } else if (!empty($condition)) {
     if ($condition == 1) {
-        $prs = database::search("SELECT * FROM product WHERE `user_email`='" . $u["email"] . "' ORDER BY `condition_id` DESC");
+        $prs = database::search("SELECT * FROM product WHERE `user_email`='" . $u["email"] . "' AND `condition_id`='1' ");
         $an = $prs->num_rows;
 
         for ($i = 0; $i < $an; $i++) {
@@ -953,7 +953,7 @@ if (!empty($search) && $age != 0) {
 <?php
         }
     } else if ($condition == 2) {
-        $prs = database::search("SELECT * FROM product WHERE `user_email`='" . $u["email"] . "' ORDER BY `condition_id` ASC");
+        $prs = database::search("SELECT * FROM product WHERE `user_email`='" . $u["email"] . "' AND `condition_id`='2'");
         $an = $prs->num_rows;
 
         for ($i = 0; $i < $an; $i++) {
